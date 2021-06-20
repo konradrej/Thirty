@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Thirty</string>
+    <string name="button_throw">Throw</string>
+    <string-array name="point_options">
+        <item>Low</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
 </resources>

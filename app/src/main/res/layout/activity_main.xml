@@ -26,7 +26,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/imageView14"
+                    android:id="@+id/diceView1"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -49,7 +49,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/imageView14"
+                    android:id="@+id/diceView2"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -72,7 +72,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/imageView14"
+                    android:id="@+id/diceView3"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -101,7 +101,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/imageView14"
+                    android:id="@+id/diceView4"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -124,7 +124,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/imageView14"
+                    android:id="@+id/diceView5"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -147,7 +147,7 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/imageView14"
+                    android:id="@+id/diceView6"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -188,9 +188,55 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Space
+        android:id="@+id/space4"
         android:layout_width="0dp"
         android:layout_height="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Space
+        android:id="@+id/space6"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="0"
+        app:layout_constraintBottom_toTopOf="@+id/space4"
+        app:layout_constraintEnd_toStartOf="@+id/space5"
+        app:layout_constraintStart_toEndOf="@+id/space2"
+        app:layout_constraintTop_toTopOf="@+id/button" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/button_throw"
+        app:layout_constraintBottom_toTopOf="@+id/space4"
+        app:layout_constraintEnd_toStartOf="@+id/space" />
+
+    <Space
+        android:id="@+id/space5"
+        android:layout_width="16dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/space4"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintTop_toTopOf="@+id/button" />
+
+    <Space
+        android:id="@+id/space7"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
