@@ -1,16 +1,37 @@
 <resources>
     <string name="app_name">Thirty</string>
     <string name="button_throw">Throw</string>
+    <string name="button_score">Count score</string>
+    <string name="button_play_again">Play again</string>
+
+    <string name="point_option_low">Low</string>
+    <string name="point_option_4">4</string>
+    <string name="point_option_5">5</string>
+    <string name="point_option_6">6</string>
+    <string name="point_option_7">7</string>
+    <string name="point_option_8">8</string>
+    <string name="point_option_9">9</string>
+    <string name="point_option_10">10</string>
+    <string name="point_option_11">11</string>
+    <string name="point_option_12">12</string>
+
     <string-array name="point_options">
-        <item>Low</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
+        <item>@string/point_option_low</item>
+        <item>@string/point_option_4</item>
+        <item>@string/point_option_5</item>
+        <item>@string/point_option_6</item>
+        <item>@string/point_option_7</item>
+        <item>@string/point_option_8</item>
+        <item>@string/point_option_9</item>
+        <item>@string/point_option_10</item>
+        <item>@string/point_option_11</item>
+        <item>@string/point_option_12</item>
     </string-array>
+    <string name="current_round">Round %1$d</string>
+    <string name="remaining_throws">Remaining throws: %1$d</string>
+    <string name="total_score">Total score: %1$d</string>
+    <string name="result">Result</string>
+    <string name="column_point_options">Point options</string>
+    <string name="column_points">Points</string>
+    <string name="EXTRA_OPTION_SCORES">com.konradrej.EXTRA_OPTION_SCORES</string>
 </resources>

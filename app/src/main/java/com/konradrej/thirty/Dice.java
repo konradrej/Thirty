@@ -1,27 +1,40 @@
 package com.konradrej.thirty;
 
+import java.util.Observable;
 import java.util.Random;
 
-public class Dice {
-    private static final Random numberGenerator = new Random();
+public class Dice extends Observable {
+    private static final Random sNumberGenerator = new Random();
 
-    private int sides;
-    private int value;
+    private final int mSideAmount;
+    private boolean mLocked;
+    private int mValue;
 
-    public Dice(){
-        this(6);
-    }
-
-    public Dice(int sides){
-        this.sides = sides;
-        throwDice();
+    public Dice(int sideAmount){
+        mSideAmount = sideAmount;
+        this.throwDice();
     }
 
     public void throwDice(){
-        value = numberGenerator.nextInt(sides) + 1;
+        mValue = sNumberGenerator.nextInt(mSideAmount) + 1;
+
+        setChanged();
+        notifyObservers(mValue);
     }
 
     public int getValue(){
-        return value;
+        return mValue;
+    }
+
+    public boolean getLocked(){
+        return mLocked;
+    }
+
+    public void setLocked(boolean locked){
+        mLocked = locked;
+    }
+
+    public void toggleLocked(){
+        mLocked = !mLocked;
     }
 }
