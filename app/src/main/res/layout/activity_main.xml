@@ -8,11 +8,10 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/space"
-        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toEndOf="@+id/space2"
         app:layout_constraintTop_toBottomOf="@+id/space9">
 
@@ -62,10 +61,16 @@
                     app:srcCompat="@drawable/white1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Space
-                android:layout_width="@dimen/spacing"
-                android:layout_height="match_parent"
-                android:layout_weight="00" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="190dp"
@@ -74,6 +79,29 @@
 
                 <ImageView
                     android:id="@+id/diceView3"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/white1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Space
+                android:layout_width="@dimen/spacing"
+                android:layout_height="match_parent"
+                android:layout_weight="0" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/diceView4"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -102,29 +130,6 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/diceView4"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="H,1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/white1" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="@dimen/spacing"
-                android:layout_height="match_parent"
-                android:layout_weight="0" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="190dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <ImageView
                     android:id="@+id/diceView5"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -132,8 +137,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
                     app:srcCompat="@drawable/white1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -159,7 +166,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/white1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </LinearLayout>
 
     </LinearLayout>
@@ -247,17 +253,10 @@
         android:layout_height="wrap_content"
         android:text="@string/remaining_throws"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/space7"
         app:layout_constraintEnd_toStartOf="@+id/space"
         app:layout_constraintStart_toEndOf="@+id/space2"
         app:layout_constraintTop_toBottomOf="@+id/space6" />
-
-    <Space
-        android:id="@+id/space8"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/spacing"
-        app:layout_constraintEnd_toStartOf="@+id/space"
-        app:layout_constraintStart_toEndOf="@+id/space2"
-        app:layout_constraintTop_toBottomOf="@+id/remainingThrows" />
 
     <TextView
         android:id="@+id/currentRound"
