@@ -183,23 +183,26 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
             mOptionSpAd.remove(selectedItem);
 
             gameModel.saveRoundResult(selectedItem);
+            mBtn.setText(R.string.button_throw);
 
             // Checks if game is over (currentRound == 10 => game is over)
             if (gameModel.getCurrentRound() == 10) {
-                // Starts result activity
-                Intent intent = new Intent(this, ResultActivity.class);
-                intent.putExtra(getString(R.string.EXTRA_OPTION_SCORES), gameModel.getResultModel());
-                startActivity(intent);
-
-                // Prepares for return to current activity
-                gameModel.startNewGame();
-                initializeSpinner(null);
+                gameOver();
             } else {
                 gameModel.startNewRound();
             }
-
-            mBtn.setText(R.string.button_throw);
         }
+    }
+
+    private void gameOver(){
+        // Starts result activity
+        Intent intent = new Intent(this, ResultActivity.class);
+        intent.putExtra(getString(R.string.EXTRA_OPTION_SCORES), gameModel.getResultModel());
+        startActivity(intent);
+
+        // Prepares for return to current activity
+        gameModel.startNewGame();
+        initializeSpinner(null);
     }
 
     @Override

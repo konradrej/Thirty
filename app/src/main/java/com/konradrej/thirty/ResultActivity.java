@@ -49,45 +49,61 @@ public class ResultActivity extends AppCompatActivity {
 
         // Tries to get ResultModel instance from Bundle or Intent
         try {
-            if (bundle != null && bundle.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
-                results = bundle.getParcelable(getString(R.string.EXTRA_OPTION_SCORES));
-            } else {
-                Bundle intentExtras = getIntent().getExtras();
-
-                if (intentExtras != null && intentExtras.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
-                    results = intentExtras.getParcelable(getString(R.string.EXTRA_OPTION_SCORES));
-                } else {
-                    // If ResultModel was not found in Bundle or Intent throw error
-                    throw new NullPointerException();
-                }
+            if (!restoreData(bundle)) {
+                // Results was not restored
+                throw new NullPointerException();
             }
-
-            int totalScore = 0;
 
             // Fill table with values
-            String[] options = getResources().getStringArray(R.array.point_options);
-            for (int i = 0; i < options.length; i++) {
-                int value = results.getOptionValue(options[i]);
-                totalScore += value;
-
-                TextView view = findViewById(mPointOptionValue[i]);
-                view.setText(String.valueOf(value));
-            }
-
-            TextView totalScoreTv = findViewById(R.id.totalScore);
-            totalScoreTv.setText(getString(R.string.total_score, totalScore));
+            populateScores();
         } catch (NullPointerException e) {
             // Inform about error using toast
-            Context context = getApplicationContext();
-            String message = "An error has occurred, data is missing.";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, message, duration);
-            toast.show();
+            sendToast(getString(R.string.error_missing_data), Toast.LENGTH_SHORT);
         }
 
         // Find button and set OnClickListener
         Button mBtn = findViewById(R.id.playAgain);
         mBtn.setOnClickListener(v -> this.finish());
+    }
+
+    private void populateScores() {
+        int totalScore = 0;
+
+        String[] options = getResources().getStringArray(R.array.point_options);
+        for (int i = 0; i < options.length; i++) {
+            int value = results.getOptionValue(options[i]);
+            totalScore += value;
+
+            TextView view = findViewById(mPointOptionValue[i]);
+            view.setText(String.valueOf(value));
+        }
+
+        TextView totalScoreTv = findViewById(R.id.totalScore);
+        totalScoreTv.setText(getString(R.string.total_score, totalScore));
+    }
+
+    private boolean restoreData(Bundle bundle) {
+        if (bundle != null && bundle.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
+            results = bundle.getParcelable(getString(R.string.EXTRA_OPTION_SCORES));
+        } else {
+            Bundle intentExtras = getIntent().getExtras();
+
+            if (intentExtras != null && intentExtras.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
+                results = intentExtras.getParcelable(getString(R.string.EXTRA_OPTION_SCORES));
+            } else {
+                // If ResultModel was not found in Bundle or Intent return false
+                return false;
+            }
+        }
+
+        // Return true if results has been restored
+        return true;
+    }
+
+    private void sendToast(String message, int duration) {
+        Context context = getApplicationContext();
+
+        Toast toast = Toast.makeText(context, message, duration);
+        toast.show();
     }
 }

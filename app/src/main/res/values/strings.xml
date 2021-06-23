@@ -3,6 +3,7 @@
     <string name="button_throw">Throw</string>
     <string name="button_score">Count score</string>
     <string name="button_play_again">Play again</string>
+    <string name="error_missing_data">An error has occurred, data is missing.</string>
 
     <string name="point_option_low">Low</string>
     <string name="point_option_4">4</string>
