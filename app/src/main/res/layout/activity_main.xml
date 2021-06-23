@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/space"
@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,21 +56,17 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
                     app:srcCompat="@drawable/white1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <Space
+                android:layout_width="@dimen/spacing"
+                android:layout_height="match_parent"
+                android:layout_weight="00" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="190dp"
@@ -85,15 +81,22 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="H,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/white1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-            <Space
-                android:layout_width="@dimen/spacing"
-                android:layout_height="match_parent"
-                android:layout_weight="0" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="190dp"
@@ -113,16 +116,10 @@
                     app:srcCompat="@drawable/white1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            <Space
+                android:layout_width="@dimen/spacing"
+                android:layout_height="match_parent"
+                android:layout_weight="0" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="190dp"
@@ -253,7 +250,6 @@
         android:layout_height="wrap_content"
         android:text="@string/remaining_throws"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintBottom_toTopOf="@+id/space7"
         app:layout_constraintEnd_toStartOf="@+id/space"
         app:layout_constraintStart_toEndOf="@+id/space2"
         app:layout_constraintTop_toBottomOf="@+id/space6" />
