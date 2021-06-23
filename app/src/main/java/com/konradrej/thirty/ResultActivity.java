@@ -1,5 +1,6 @@
 package com.konradrej.thirty;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -16,9 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private Button mBtn;
+public class ResultActivity extends AppCompatActivity {
     private final Integer[] mPointOptionValue = {
             R.id.pointOptionLowValue,
             R.id.pointOption4Value,
@@ -37,10 +36,10 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        try {
-            this.getSupportActionBar().hide();
+        ActionBar bar = getSupportActionBar();
+        if(bar != null){
+            bar.hide();
         }
-        catch (NullPointerException e){}
 
         try {
             ResultModel values;
@@ -77,14 +76,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
             toast.show();
         }
 
-        mBtn = findViewById(R.id.playAgain);
-        mBtn.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        this.finish();
+        Button mBtn = findViewById(R.id.playAgain);
+        mBtn.setOnClickListener(v -> this.finish());
     }
 }

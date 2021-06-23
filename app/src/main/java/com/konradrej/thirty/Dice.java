@@ -1,9 +1,10 @@
 package com.konradrej.thirty;
 
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Random;
 
-public class Dice extends Observable {
+public class Dice extends Observable implements Serializable {
     private static final Random sNumberGenerator = new Random();
 
     private final int mSideAmount;
