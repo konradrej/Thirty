@@ -1,22 +1,19 @@
 package com.konradrej.thirty;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+/**
+ * Handles result screen activity.
+ *
+ * @author Konrad Rej
+ */
 public class ResultActivity extends AppCompatActivity {
     private final Integer[] mPointOptionValue = {
             R.id.pointOptionLowValue,
@@ -30,35 +27,47 @@ public class ResultActivity extends AppCompatActivity {
             R.id.pointOption11Value,
             R.id.pointOption12Value,
     };
+    private ResultModel results;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+
+        bundle.putSerializable(getString(R.string.EXTRA_OPTION_SCORES), results);
+    }
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.activity_result);
 
+        // Hide action bar
         ActionBar bar = getSupportActionBar();
-        if(bar != null){
+        if (bar != null) {
             bar.hide();
         }
 
+        // Tries to get ResultModel instance from Bundle or Intent
         try {
-            ResultModel values;
-            if (savedInstanceState == null) {
-                Bundle extras = getIntent().getExtras();
-                if (extras != null) {
-                    values = (ResultModel) extras.getSerializable(getString(R.string.EXTRA_OPTION_SCORES));
+            if (bundle != null && bundle.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
+                results = (ResultModel) bundle.getSerializable(getString(R.string.EXTRA_OPTION_SCORES));
+            } else {
+                Bundle intentExtras = getIntent().getExtras();
+
+                if (intentExtras != null && intentExtras.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
+                    results = (ResultModel) intentExtras.getSerializable(getString(R.string.EXTRA_OPTION_SCORES));
                 } else {
+                    // If ResultModel was not found in Bundle or Intent throw error
                     throw new NullPointerException();
                 }
-            } else {
-                values = (ResultModel) savedInstanceState.getSerializable(getString(R.string.EXTRA_OPTION_SCORES));
             }
 
             int totalScore = 0;
 
+            // Fill table with values
             String[] options = getResources().getStringArray(R.array.point_options);
-            for(int i = 0; i < options.length; i++){
-                int value = values.getOptionValue(options[i]);
+            for (int i = 0; i < options.length; i++) {
+                int value = results.getOptionValue(options[i]);
                 totalScore += value;
 
                 TextView view = findViewById(mPointOptionValue[i]);
@@ -67,7 +76,8 @@ public class ResultActivity extends AppCompatActivity {
 
             TextView totalScoreTv = findViewById(R.id.totalScore);
             totalScoreTv.setText(getString(R.string.total_score, totalScore));
-        }catch(NullPointerException e){
+        } catch (NullPointerException e) {
+            // Inform about error using toast
             Context context = getApplicationContext();
             String message = "An error has occurred, data is missing.";
             int duration = Toast.LENGTH_SHORT;
@@ -76,6 +86,7 @@ public class ResultActivity extends AppCompatActivity {
             toast.show();
         }
 
+        // Find button and set OnClickListener
         Button mBtn = findViewById(R.id.playAgain);
         mBtn.setOnClickListener(v -> this.finish());
     }

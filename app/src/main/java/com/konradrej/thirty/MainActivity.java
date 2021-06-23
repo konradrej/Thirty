@@ -1,10 +1,8 @@
 package com.konradrej.thirty;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,17 +10,22 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
-public class MainActivity extends AppCompatActivity implements Observer, View.OnClickListener {
-    private final ArrayList<Dice> mDiceList = new ArrayList<>();
-    private final List<ImageView> mDiceIvList = new ArrayList<>();
-    private final Integer[] mDiceDrawable = {
+/**
+ * Handles GameModel instance and gameplay screen activity.
+ *
+ * @author Konrad Rej
+ */
+public class MainActivity extends AppCompatActivity implements PropertyChangeListener, View.OnClickListener {
+    private final Integer[] diceDrawables = {
             R.drawable.white1,
             R.drawable.white2,
             R.drawable.white3,
@@ -30,31 +33,27 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
             R.drawable.white5,
             R.drawable.white6
     };
-    private ResultModel results;
+    private final List<ImageView> mDiceIvList = new ArrayList<>();
     private Button mBtn;
     private TextView mCurrentRoundTv;
     private TextView mRemainingThrowsTv;
     private Spinner mOptionSp;
     private ArrayAdapter<CharSequence> mOptionSpAd;
-    private int currentRound = 1;
-    private int remainingThrows = 3;
+    private GameModel gameModel;
+
 
     @Override
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
 
-        bundle.putSerializable("mDiceList", mDiceList);
-        bundle.putSerializable("results", results);
-
         ArrayList<CharSequence> mOptionSpAdValues = new ArrayList<>();
-        for(int i = 0; i < mOptionSpAd.getCount(); i++){
+        for (int i = 0; i < mOptionSpAd.getCount(); i++) {
             mOptionSpAdValues.add(mOptionSpAd.getItem(i));
         }
         bundle.putSerializable("mOptionSpAdValues", mOptionSpAdValues);
         bundle.putInt("mOptionSpPos", mOptionSp.getSelectedItemPosition());
 
-        bundle.putInt("currentRound", currentRound);
-        bundle.putInt("remainingThrows", remainingThrows);
+        bundle.putSerializable("gameModel", gameModel);
     }
 
     @Override
@@ -62,88 +61,40 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         super.onCreate(bundle);
         setContentView(R.layout.activity_main);
 
+        // Hide action bar
         ActionBar bar = getSupportActionBar();
-        if(bar != null){
+        if (bar != null) {
             bar.hide();
         }
 
+        // If bundle contains GameModel instance use it, otherwise create new instance
+        if (bundle != null && bundle.containsKey("gameModel")) {
+            gameModel = (GameModel) bundle.getSerializable("gameModel");
+        } else {
+            gameModel = new GameModel();
+        }
+        gameModel.addPropertyChangeListener(this);
+
         // Get mCurrentRoundTv and update it
         mCurrentRoundTv = findViewById(R.id.currentRound);
-        if(bundle != null && bundle.containsKey("currentRound")){
-            currentRound = bundle.getInt("currentRound");
-        }
-        updateRound();
+        updateCurrentRound();
 
         // Get mRemainingThrowsTv and update it
         mRemainingThrowsTv = findViewById(R.id.remainingThrows);
-        if(bundle != null && bundle.containsKey("remainingThrows")){
-            remainingThrows = bundle.getInt("remainingThrows");
-        }
         updateRemainingThrows();
-
-        // Initiate results
-        if(bundle != null && bundle.containsKey("results")){
-            results = (ResultModel) bundle.getSerializable("results");
-        }else{
-            results = new ResultModel(getString(R.string.point_option_low));
-        }
 
         // Get mBtn and set OnClickListener for all dice imageViews
         mBtn = findViewById(R.id.button);
         mBtn.setOnClickListener(this);
 
+        initializeDiceIv();
         initializeSpinner(bundle);
-        initializeDice(bundle);
     }
 
-    private void updateRound(){
-        mCurrentRoundTv.setText(getString(R.string.current_round, currentRound));
-    }
-
-    private void updateRemainingThrows(){
-        mRemainingThrowsTv.setText(getString(R.string.remaining_throws, remainingThrows));
-    }
-
-    private void updateDiceIv(Dice dice, ImageView diceIv){
-        if(dice.getLocked()){
-            diceIv.setAlpha(0.3f);
-        }else{
-            diceIv.setAlpha(1f);
-        }
-    }
-
-    private void initializeSpinner(Bundle bundle){
-        // Get mOptionSp and populate it with values
-        mOptionSp = findViewById(R.id.spinner);
-        if(bundle != null && bundle.containsKey("mOptionSpPos")){
-            mOptionSp.setSelection(bundle.getInt("mOptionSpPos"));
-        }
-        if(bundle != null && bundle.containsKey("mOptionSpAdValues")){
-            List<String> items = (ArrayList<String>) bundle.getSerializable("mOptionSpAdValues");
-            mOptionSpAd = new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
-        }else{
-            List<String> items = new ArrayList<>(
-                    Arrays.asList(getResources().getStringArray(R.array.point_options))
-            );
-            mOptionSpAd = new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
-        }
-        mOptionSpAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mOptionSp.setAdapter(mOptionSpAd);
-    }
-
-    private void initializeDice(Bundle bundle){
-        // Add new dice to mDiceList
-        if(bundle != null && bundle.containsKey("mDiceList")){
-            mDiceList.addAll((ArrayList<Dice>) bundle.getSerializable("mDiceList"));
-        }else{
-            for(int i = 0; i < 6; i++){
-                Dice dice = new Dice(6);
-                dice.addObserver(this);
-
-                mDiceList.add(dice);
-            }
-        }
-
+    /**
+     * Populates mDiceIvList and sets OnClickListener for all diceIv
+     */
+    private void initializeDiceIv() {
         // Populate mDiceIvList
         mDiceIvList.add(findViewById(R.id.diceView1));
         mDiceIvList.add(findViewById(R.id.diceView2));
@@ -153,110 +104,119 @@ public class MainActivity extends AppCompatActivity implements Observer, View.On
         mDiceIvList.add(findViewById(R.id.diceView6));
 
         // Set OnClickListener for all dice imageViews
-        for(ImageView dice : mDiceIvList){
-            dice.setOnClickListener(v -> {
-                ImageView diceIv = v.findViewById(v.getId());
-                int pos = mDiceIvList.indexOf(diceIv);
+        for (int i = 0; i < mDiceIvList.size(); i++) {
+            ImageView diceIv = mDiceIvList.get(i);
 
-                Dice localDice = mDiceList.get(pos);
-                localDice.toggleLocked();
+            updateDiceIv(gameModel.getDiceByIndex(i), diceIv);
 
-                updateDiceIv(localDice, diceIv);
+            diceIv.setOnClickListener(v -> {
+                ImageView localDiceIv = v.findViewById(v.getId());
+                int index = mDiceIvList.indexOf(localDiceIv);
+
+                Dice dice = gameModel.getDiceByIndex(index);
+                dice.toggleLocked();
+
+                updateDiceIv(dice, mDiceIvList.get(index));
             });
         }
-
-        // Perform first throw
-        throwDice();
     }
 
-    private void throwDice(){
-        for(int i = 0; i < mDiceList.size(); i++){
-            if(!mDiceList.get(i).getLocked()){
-                mDiceList.get(i).throwDice();
-            }
+    /**
+     * Populates count option spinner with values from bundle if they exist otherwise
+     * with values from string array in /res/values/strings.xml
+     *
+     * @param bundle bundle with saved data
+     */
+    private void initializeSpinner(Bundle bundle) {
+        // Get mOptionSp and populate it with values
+        mOptionSp = findViewById(R.id.spinner);
+        if (bundle != null && bundle.containsKey("mOptionSpAdValues")) {
+            List<String> items =
+                    (ArrayList<String>) bundle.getSerializable("mOptionSpAdValues");
+            mOptionSpAd =
+                    new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
+        } else {
+            List<String> items =
+                    new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.point_options)));
+            mOptionSpAd =
+                    new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
         }
 
-        remainingThrows--;
-        updateRemainingThrows();
+        if (bundle != null && bundle.containsKey("mOptionSpPos")) {
+            mOptionSp.setSelection(bundle.getInt("mOptionSpPos"));
+        }
+        mOptionSpAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mOptionSp.setAdapter(mOptionSpAd);
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        Dice dice = (Dice) o;
-        int pos = mDiceList.indexOf(dice);
-
-        mDiceIvList.get(pos).setImageResource(mDiceDrawable[mDiceList.get(pos).getValue()-1]);
+    private void updateCurrentRound() {
+        mCurrentRoundTv.setText(
+                getString(R.string.current_round, gameModel.getCurrentRound()));
     }
 
+    private void updateRemainingThrows() {
+        mRemainingThrowsTv.setText(
+                getString(R.string.remaining_throws, gameModel.getRemainingThrows()));
+    }
 
+    private void updateDiceIv(Dice dice, ImageView diceIv) {
+        diceIv.setImageResource(diceDrawables[dice.getValue() - 1]);
 
-
-
+        if (dice.getLocked()) {
+            diceIv.setAlpha(0.3f);
+        } else {
+            diceIv.setAlpha(1f);
+        }
+    }
 
     @Override
     public void onClick(View v) {
-        if(remainingThrows > 0){
-            if(remainingThrows == 1){
+        // Checks if round is over (remainingThrows > 0 => round is not over)
+        if (gameModel.getRemainingThrows() > 0) {
+            if (gameModel.getRemainingThrows() == 1) {
                 mBtn.setText(R.string.button_score);
             }
 
-            throwDice();
-        }else{
+            gameModel.throwDice();
+        } else {
             CharSequence selectedItem = (CharSequence) mOptionSp.getSelectedItem();
             mOptionSpAd.remove(selectedItem);
 
-            int[] diceValues = new int[6];
-            for(int i = 0; i < mDiceList.size(); i++){
-                Dice dice = mDiceList.get(i);
-                diceValues[i] = dice.getValue();
+            gameModel.saveRoundResult(selectedItem);
 
-                dice.setLocked(false);
-                updateDiceIv(dice, mDiceIvList.get(i));
-            }
-
-            results.addResult(selectedItem, diceValues, diceValues.length);
-
-            if(currentRound == 10){
-                /*
-                Intent intent2 = new Intent(this, MainActivity.class);
-                this.finish();
-                startActivity(intent2);
-
+            // Checks if game is over (currentRound == 10 => game is over)
+            if (gameModel.getCurrentRound() == 10) {
+                // Starts result activity
                 Intent intent = new Intent(this, ResultActivity.class);
-                intent.putExtra(getString(R.string.EXTRA_OPTION_SCORES), results);
-                startActivity(intent);
-                */
-                Intent intent = new Intent(this, ResultActivity.class);
-                intent.putExtra(getString(R.string.EXTRA_OPTION_SCORES), results);
+                intent.putExtra(getString(R.string.EXTRA_OPTION_SCORES), gameModel.getResultModel());
                 startActivity(intent);
 
-                startNewGame();
-            }else{
-                remainingThrows = 3;
-                throwDice();
-                updateRemainingThrows();
-                mBtn.setText(R.string.button_throw);
-                currentRound++;
-                updateRound();
+                // Prepares for return to current activity
+                gameModel.startNewGame();
+                initializeSpinner(null);
+            } else {
+                gameModel.startNewRound();
             }
+
+            mBtn.setText(R.string.button_throw);
         }
     }
 
-    private void startNewGame(){
-        currentRound = 1;
-        updateRound();
-
-        remainingThrows = 3;
-        updateRemainingThrows();
-
-        for(int i = 0; i < mDiceList.size(); i++){
-            Dice dice = mDiceList.get(i);
-            dice.setLocked(false);
-            updateDiceIv(dice, mDiceIvList.get(i));
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        switch (evt.getPropertyName()) {
+            case "mDiceListSingle":
+                Dice dice = (Dice) evt.getNewValue();
+                updateDiceIv(dice, mDiceIvList.get(gameModel.getDiceIndex(dice)));
+                break;
+            case "remainingThrows":
+                updateRemainingThrows();
+                break;
+            case "currentRound":
+                updateCurrentRound();
+                break;
+            default:
+                Log.e("Thirty: ", "Unknown propertyChange: " + evt.getPropertyName());
         }
-
-        initializeSpinner(null);
-
-        results = new ResultModel(getString(R.string.point_option_low));
     }
 }

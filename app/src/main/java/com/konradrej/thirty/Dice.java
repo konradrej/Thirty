@@ -1,41 +1,45 @@
 package com.konradrej.thirty;
 
 import java.io.Serializable;
-import java.util.Observable;
 import java.util.Random;
 
-public class Dice extends Observable implements Serializable {
+/**
+ * Handles dice state and actions.
+ *
+ * @author Konrad Rej
+ */
+public class Dice implements Serializable {
     private static final Random sNumberGenerator = new Random();
 
-    private final int mSideAmount;
-    private boolean mLocked;
-    private int mValue;
+    private final int sideAmount;
+    private boolean locked;
+    private int value;
 
-    public Dice(int sideAmount){
-        mSideAmount = sideAmount;
+    public Dice(int sideAmount) {
+        this.sideAmount = sideAmount;
         this.throwDice();
     }
 
-    public void throwDice(){
-        mValue = sNumberGenerator.nextInt(mSideAmount) + 1;
-
-        setChanged();
-        notifyObservers(mValue);
+    /**
+     * Generates new dice value.
+     */
+    public void throwDice() {
+        value = sNumberGenerator.nextInt(sideAmount) + 1;
     }
 
-    public int getValue(){
-        return mValue;
+    public int getValue() {
+        return value;
     }
 
-    public boolean getLocked(){
-        return mLocked;
+    public boolean getLocked() {
+        return locked;
     }
 
-    public void setLocked(boolean locked){
-        mLocked = locked;
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
-    public void toggleLocked(){
-        mLocked = !mLocked;
+    public void toggleLocked() {
+        locked = !locked;
     }
 }

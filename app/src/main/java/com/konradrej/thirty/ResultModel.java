@@ -7,45 +7,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Stores round results under the appropriate count option.
+ *
+ * @author Konrad Rej
+ */
 public class ResultModel implements Serializable {
-    String lowOption;
     Map<CharSequence, Integer> valuePerOption = new HashMap<>();
 
-    public ResultModel(String lowOption){
-        this.lowOption = lowOption;
+    public ResultModel() {
+
     }
 
-    public void addResult(CharSequence countOption, int[] diceValues, int n){
-        int totalScore = 0;
-        if(((String) countOption).equals(lowOption)){
-            for(int i = 0; i < n; i++){
-                if(diceValues[i] <= 3){
-                    totalScore += diceValues[i];
-                }
-            }
-        }else{
-            int targetCombination = Integer.parseInt((String) countOption);
-            totalScore = targetCombination * calcMaxAmountOfPossibleSets(diceValues, targetCombination);
-        }
-
-        valuePerOption.put(countOption, totalScore);
-    }
-
-    public int getOptionValue(CharSequence option){
-        if(valuePerOption.containsKey(option) && valuePerOption.get(option) != null){
-            return valuePerOption.get(option);
-        }else{
-            return -1;
-        }
-    }
-
-    public static int calcMaxAmountOfPossibleSets(int[] set, int target){
+    /**
+     * Calculates the max amount of possible non overlapping subsets from set that can be
+     * constructed at once and whose sum equals the target value.
+     *
+     * @param set    set of digits to be used
+     * @param target target value
+     * @return max amount of sets possible
+     */
+    public static int calcMaxAmountOfPossibleSets(int[] set, int target) {
         List<List<Integer>> combinations = findLists(set, target, 0);
         List<List<List<Integer>>> combinedLists = combineLists(combinations, 0);
 
         int maxLength = 0;
-        for(List<List<Integer>> list : combinedLists){
-            if(list.size() > maxLength){
+        for (List<List<Integer>> list : combinedLists) {
+            if (list.size() > maxLength) {
                 maxLength = list.size();
             }
         }
@@ -53,26 +41,36 @@ public class ResultModel implements Serializable {
         return maxLength;
     }
 
-    public static List<List<Integer>> findLists(int[] set, int target, int lastSpot){
+    /**
+     * Creates list of all possible combinations of the digits in the set that sum to
+     * the target value.
+     *
+     * @param set      set of available digits
+     * @param target   target value
+     * @param lastSpot last used spot in the set
+     * @return list of number combinations equaling target value
+     * (index in set, not value itself)
+     */
+    public static List<List<Integer>> findLists(int[] set, int target, int lastSpot) {
         List<List<Integer>> lists = new ArrayList<>();
 
-        for(int i = lastSpot; i < set.length; i++){
+        for (int i = lastSpot; i < set.length; i++) {
             int value = set[i];
 
-            if(value > target){
+            if (value > target) {
                 continue;
             }
 
-            if(value == target){
+            if (value == target) {
                 List<Integer> list = new ArrayList<>();
                 list.add(i);
                 lists.add(list);
             }
 
-            if(value < target){
-                List<List<Integer>> receivedLists = findLists(set, target - value, i+1);
+            if (value < target) {
+                List<List<Integer>> receivedLists = findLists(set, target - value, i + 1);
 
-                for(List<Integer> receivedList : receivedLists){
+                for (List<Integer> receivedList : receivedLists) {
                     receivedList.add(i);
                     lists.add(receivedList);
                 }
@@ -82,25 +80,33 @@ public class ResultModel implements Serializable {
         return lists;
     }
 
-    public static List<List<List<Integer>>> combineLists(List<List<Integer>> inputLists, int lastSpot){
+    /**
+     * Generates a list of all possible list combinations where the values in the lists
+     * do not overlap.
+     *
+     * @param inputLists list containing lists of numbers
+     * @param lastSpot   last used spot in the set
+     * @return list of possible list combinations where the lists do not overlap
+     */
+    public static List<List<List<Integer>>> combineLists(List<List<Integer>> inputLists, int lastSpot) {
         List<List<List<Integer>>> returnList = new ArrayList<>();
 
-        for(int i = lastSpot; i < inputLists.size(); i++){
+        for (int i = lastSpot; i < inputLists.size(); i++) {
             List<List<Integer>> addList = new ArrayList<>();
             List<Integer> workList = inputLists.get(i);
 
             addList.add(workList);
 
-            for(int j = lastSpot + 1; j < inputLists.size(); j++){
+            for (int j = lastSpot + 1; j < inputLists.size(); j++) {
                 boolean isDisjoint = true;
 
-                for(int k = 0; k < addList.size(); k++){
-                    if(!Collections.disjoint(inputLists.get(j), addList.get(k))){
+                for (int k = 0; k < addList.size(); k++) {
+                    if (!Collections.disjoint(inputLists.get(j), addList.get(k))) {
                         isDisjoint = false;
                     }
                 }
 
-                if(isDisjoint){
+                if (isDisjoint) {
                     addList.add(inputLists.get(j));
                 }
             }
@@ -109,5 +115,41 @@ public class ResultModel implements Serializable {
         }
 
         return returnList;
+    }
+
+    /**
+     * Calculates score for round and stores it under the correct count option.
+     *
+     * @param countOption which count option to store result as
+     * @param diceValues  array of dice values
+     */
+    public void addResult(CharSequence countOption, int[] diceValues) {
+        int totalScore = 0;
+        if (countOption.equals("Low")) {
+            for (int i = 0; i < diceValues.length; i++) {
+                if (diceValues[i] <= 3) {
+                    totalScore += diceValues[i];
+                }
+            }
+        } else {
+            int targetCombination = Integer.parseInt((String) countOption);
+            totalScore = targetCombination * calcMaxAmountOfPossibleSets(diceValues, targetCombination);
+        }
+
+        valuePerOption.put(countOption, totalScore);
+    }
+
+    /**
+     * Returns the stored value for the selected count option.
+     *
+     * @param countOption count option to get value for
+     * @return final score for count option or -1 if count option does not exist
+     */
+    public int getOptionValue(CharSequence countOption) {
+        if (valuePerOption.containsKey(countOption) && valuePerOption.get(countOption) != null) {
+            return valuePerOption.get(countOption);
+        } else {
+            return -1;
+        }
     }
 }
