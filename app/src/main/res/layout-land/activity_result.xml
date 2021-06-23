@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/playAgain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/button_play_again"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/space13"
+        app:layout_constraintEnd_toStartOf="@+id/space11"
+        app:layout_constraintStart_toEndOf="@+id/space19"
+        app:layout_constraintTop_toBottomOf="@+id/space15" />
+
+    <Space
+        android:id="@+id/space15"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing"
+        app:layout_constraintEnd_toStartOf="@+id/space11"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/space19"
+        app:layout_constraintTop_toBottomOf="@+id/totalScore" />
+
+    <TextView
+        android:id="@+id/totalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total_score"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/space11"
+        app:layout_constraintStart_toEndOf="@+id/space19"
+        app:layout_constraintTop_toBottomOf="@+id/space14" />
+
+    <Space
+        android:id="@+id/space14"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing"
+        app:layout_constraintEnd_toStartOf="@+id/space11"
+        app:layout_constraintStart_toEndOf="@+id/space19"
+        app:layout_constraintTop_toBottomOf="@+id/result" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/result"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintEnd_toStartOf="@+id/space11"
+        app:layout_constraintStart_toEndOf="@+id/space19"
+        app:layout_constraintTop_toBottomOf="@+id/space12" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/space13"
+        app:layout_constraintStart_toEndOf="@+id/space10"
+        app:layout_constraintTop_toBottomOf="@+id/space12">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/columnPointOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="20dp"
+                android:text="@string/column_point_options"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/columnPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingEnd="20dp"
+                android:text="@string/column_points"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOptionLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_low"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOptionLowValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_4"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption4Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_5"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption5Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_6"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption6Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_7"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption7Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_8"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption8Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_9"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption9Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_10"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption10Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_11"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption11Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pointOption12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/point_option_12"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/pointOption12Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textSize="20sp" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Space
+        android:id="@+id/space13"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/space11"
+        app:layout_constraintStart_toEndOf="@+id/space10" />
+
+    <Space
+        android:id="@+id/space12"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing"
+        app:layout_constraintEnd_toStartOf="@+id/space11"
+        app:layout_constraintStart_toEndOf="@+id/space10"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:id="@+id/space11"
+        android:layout_width="@dimen/spacing"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:id="@+id/space10"
+        android:layout_width="@dimen/spacing"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:id="@+id/space19"
+        android:layout_width="@dimen/spacing"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/space13"
+        app:layout_constraintStart_toEndOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/space12"
+        app:layout_constraintVertical_bias="0.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>
