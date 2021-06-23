@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
         bundle.putSerializable("mOptionSpAdValues", mOptionSpAdValues);
         bundle.putInt("mOptionSpPos", mOptionSp.getSelectedItemPosition());
 
-        bundle.putSerializable("gameModel", gameModel);
+        bundle.putParcelable("gameModel", gameModel);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements PropertyChangeLis
 
         // If bundle contains GameModel instance use it, otherwise create new instance
         if (bundle != null && bundle.containsKey("gameModel")) {
-            gameModel = (GameModel) bundle.getSerializable("gameModel");
+            gameModel = bundle.getParcelable("gameModel");
         } else {
             gameModel = new GameModel();
         }

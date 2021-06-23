@@ -1,5 +1,8 @@
 package com.konradrej.thirty;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,12 +15,28 @@ import java.util.Map;
  *
  * @author Konrad Rej
  */
-public class ResultModel implements Serializable {
+public class ResultModel implements Parcelable {
     Map<CharSequence, Integer> valuePerOption = new HashMap<>();
 
     public ResultModel() {
 
     }
+
+    protected ResultModel(Parcel in) {
+        in.readMap(valuePerOption, Integer.class.getClassLoader());
+    }
+
+    public static final Creator<ResultModel> CREATOR = new Creator<ResultModel>() {
+        @Override
+        public ResultModel createFromParcel(Parcel in) {
+            return new ResultModel(in);
+        }
+
+        @Override
+        public ResultModel[] newArray(int size) {
+            return new ResultModel[size];
+        }
+    };
 
     /**
      * Calculates the max amount of possible non overlapping subsets from set that can be
@@ -151,5 +170,15 @@ public class ResultModel implements Serializable {
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeMap(valuePerOption);
     }
 }

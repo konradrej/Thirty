@@ -1,5 +1,8 @@
 package com.konradrej.thirty;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.Random;
 
@@ -8,7 +11,7 @@ import java.util.Random;
  *
  * @author Konrad Rej
  */
-public class Dice implements Serializable {
+public class Dice implements Parcelable {
     private static final Random sNumberGenerator = new Random();
 
     private final int sideAmount;
@@ -19,6 +22,24 @@ public class Dice implements Serializable {
         this.sideAmount = sideAmount;
         this.throwDice();
     }
+
+    protected Dice(Parcel in) {
+        sideAmount = in.readInt();
+        locked = in.readByte() != 0;
+        value = in.readInt();
+    }
+
+    public static final Creator<Dice> CREATOR = new Creator<Dice>() {
+        @Override
+        public Dice createFromParcel(Parcel in) {
+            return new Dice(in);
+        }
+
+        @Override
+        public Dice[] newArray(int size) {
+            return new Dice[size];
+        }
+    };
 
     /**
      * Generates new dice value.
@@ -41,5 +62,17 @@ public class Dice implements Serializable {
 
     public void toggleLocked() {
         locked = !locked;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(sideAmount);
+        dest.writeByte((byte) (locked ? 1 : 0));
+        dest.writeInt(value);
     }
 }

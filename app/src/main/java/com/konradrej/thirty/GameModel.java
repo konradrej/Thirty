@@ -1,5 +1,8 @@
 package com.konradrej.thirty;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
@@ -10,20 +13,37 @@ import java.util.ArrayList;
  *
  * @author Konrad Rej
  */
-public class GameModel implements Serializable {
+public class GameModel implements Parcelable {
     private final int THROW_AMOUNT = 3;
 
-    private final PropertyChangeSupport pclSupport;
+    private final PropertyChangeSupport pclSupport = new PropertyChangeSupport(this);
     private int currentRound;
     private int remainingThrows;
     private ResultModel results;
     private ArrayList<Dice> diceList;
 
     public GameModel() {
-        pclSupport = new PropertyChangeSupport(this);
-
         startNewGame();
     }
+
+    protected GameModel(Parcel in) {
+        currentRound = in.readInt();
+        remainingThrows = in.readInt();
+        results = in.readParcelable(ResultModel.class.getClassLoader());
+        diceList = in.createTypedArrayList(Dice.CREATOR);
+    }
+
+    public static final Creator<GameModel> CREATOR = new Creator<GameModel>() {
+        @Override
+        public GameModel createFromParcel(Parcel in) {
+            return new GameModel(in);
+        }
+
+        @Override
+        public GameModel[] newArray(int size) {
+            return new GameModel[size];
+        }
+    };
 
     /**
      * Create and add dice to diceList
@@ -146,5 +166,19 @@ public class GameModel implements Serializable {
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         pclSupport.removePropertyChangeListener(pcl);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(THROW_AMOUNT);
+        dest.writeInt(currentRound);
+        dest.writeInt(remainingThrows);
+        dest.writeParcelable(results, flags);
+        dest.writeTypedList(diceList);
     }
 }

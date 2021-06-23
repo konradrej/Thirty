@@ -33,7 +33,7 @@ public class ResultActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
 
-        bundle.putSerializable(getString(R.string.EXTRA_OPTION_SCORES), results);
+        bundle.putParcelable(getString(R.string.EXTRA_OPTION_SCORES), results);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class ResultActivity extends AppCompatActivity {
         // Tries to get ResultModel instance from Bundle or Intent
         try {
             if (bundle != null && bundle.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
-                results = (ResultModel) bundle.getSerializable(getString(R.string.EXTRA_OPTION_SCORES));
+                results = bundle.getParcelable(getString(R.string.EXTRA_OPTION_SCORES));
             } else {
                 Bundle intentExtras = getIntent().getExtras();
 
                 if (intentExtras != null && intentExtras.containsKey(getString(R.string.EXTRA_OPTION_SCORES))) {
-                    results = (ResultModel) intentExtras.getSerializable(getString(R.string.EXTRA_OPTION_SCORES));
+                    results = intentExtras.getParcelable(getString(R.string.EXTRA_OPTION_SCORES));
                 } else {
                     // If ResultModel was not found in Bundle or Intent throw error
                     throw new NullPointerException();
