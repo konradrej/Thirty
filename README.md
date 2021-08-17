@@ -65,8 +65,11 @@ The app implements the game thirty. You play the thirty game by throwing the dic
 <!-- SCREENSHOTS -->
 ## Screeshots
 <p align="center">
-    <img src="images/screenshot_1.png" width="200px"/>
-    <img src="images/screenshot_2.png" width="200px"/>
+    <img src="images/screenshot_1.png" width="200px" alt="Light theme portrait example" />
+    <img src="images/screenshot_2.png" width="200px" alt="Dark theme portrait example"/>
+    <br>
+    <img src="images/screenshot_3.png" height="200px" alt="Light theme landscape example"/>
+    <img src="images/screenshot_4.png" height="200px" alt="Dark theme landscape example"/>
 </p>
 
 
